@@ -127,5 +127,52 @@ void rgb_to_hsv(image im)
 
 void hsv_to_rgb(image im)
 {
-    // TODO Fill this in
+    float r, g, b, h, s, v, m, c, ha, xv;
+    for (int y = 0; y < im.h; ++y) {
+        for (int x = 0; x < im.w; ++x) {
+            h = get_pixel(im, x, y, 0);
+            s = get_pixel(im, x, y, 1);
+            v = get_pixel(im, x, y, 2);
+
+            c = v * s;
+            ha = h * 6;
+            xv= c * (1 - fabs(fmod(ha, 2) - 1));
+
+            if (ha >= 0 && ha < 1) {
+                r = c;
+                g = xv;
+                b = 0;
+            } else if (ha >= 1 && ha < 2) {
+                r = xv;
+                g = c;
+                b = 0;
+            } else if (ha >= 2 && ha < 3) {
+                r = 0;
+                g = c;
+                b = xv;
+            } else if (ha >= 3 && ha < 4) {
+                r = 0;
+                g = xv;
+                b = c;
+            } else if (ha >= 4 && ha < 5) {
+                r = xv;
+                g = 0;
+                b = c;
+            } else {
+                r = c;
+                g = 0;
+                b = xv;
+            }
+
+            m = v - c;
+
+            r = r + m;
+            g = g + m;
+            b = b + m;
+
+            set_pixel(im, x, y, 0, r);
+            set_pixel(im, x, y, 1, g);
+            set_pixel(im, x, y, 2, b);
+        }
+    }
 }
